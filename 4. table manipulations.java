@@ -2,26 +2,32 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner smth = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.print("n: ");
+        System.out.print("Введите размер массива: ");
+        int n = scanner.nextInt();
 
-        int n = smth.nextInt();
-        int[] nums = new int[n];
+        int[] arr = new int[n];
+        System.out.println("Введите " + n + " элементов массива:");
 
-        int summ = 0, min = 0x7FFFFFFF;
         for (int i = 0; i < n; i++) {
-            System.out.print(Integer.toString(i) + ": ");
-
-            nums[i] = smth.nextInt();
-
-            summ += nums[i];
-            min = Integer.min(min, nums[i]);
+            arr[i] = scanner.nextInt();
         }
 
-        int avg = summ / n;
-        System.out.printf("Минимальное вхождение: %d, среднее арифметическое: %d\nРезультат: %d", min, avg, min + avg);
+        int sum = arr[0];
+        int min = arr[0];
+        for (int i = 1; i < n; i++) {
+            sum += arr[i];
+            if (arr[i] < min) {
+                min = arr[i];
+            }
+        }
 
-        smth.close();
+        double avg = (double) sum / n;
+        double result = min + avg;
+
+        System.out.println("Сумма минимального элемента и среднего арифметического массива: " + result);
+
+        scanner.close();
     }
 }
