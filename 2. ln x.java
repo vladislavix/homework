@@ -9,7 +9,12 @@ public class Main {
         System.out.print("x: ");
 
         double x = smth.nextDouble();
-        for (int i = 0; i < 1000; i++)
+
+        System.out.print("i: ");
+
+        int limit = smth.nextInt();
+
+        for (int i = 0; i < limit; i++)
             summ += (Math.pow(-1, i) * Math.pow(x - 1, i + 1)) / (i + 1);
 
         System.out.println(summ);
