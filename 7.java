@@ -6,10 +6,18 @@ class ExpressionCalculator {
     }
 
     public static double calculateExpression2(double a, double b) {
+        double diff = (a - b);
+
+        if (diff == 0)
+            return -1;
+
         return (a + b) / (a - b);
     }
 
     public static double calculateExpression3(double a, double x, double b) {
+        if (b == 0)
+            return -1;
+
         double ax = a * x;
         return ax / b;
     }
