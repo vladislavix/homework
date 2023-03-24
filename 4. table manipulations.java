@@ -14,9 +14,9 @@ public class Main {
             arr[i] = scanner.nextInt();
         }
 
-        int sum = arr[0];
+        int sum = 0;
         int min = arr[0];
-        for (int i = 1; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             sum += arr[i];
             if (arr[i] < min) {
                 min = arr[i];
