@@ -1,107 +1,106 @@
 import java.util.Scanner;
 
-class Calculator<T extends Number> {
-    public T add(T num1, T num2) {
-        if (num1 instanceof Integer) {
-            return (T) Integer.valueOf(num1.intValue() + num2.intValue());
-        } else if (num1 instanceof Double) {
-            return (T) Double.valueOf(num1.doubleValue() + num2.doubleValue());
-        } else {
-            throw new IllegalArgumentException("Неверный тип данных");
-        }
+interface Operationable<T> {
+    T add(T a, T b);
+    T sub(T a, T b);
+    T div(T a, T b) throws Exception;
+    T mul(T a, T b);
+}
+
+class IntegerOperations implements Operationable<Integer> {
+    @Override
+    public Integer add(Integer a, Integer b) {
+        return a + b;
     }
 
-    public T subtract(T num1, T num2) {
-        if (num1 instanceof Integer) {
-            return (T) Integer.valueOf(num1.intValue() - num2.intValue());
-        } else if (num1 instanceof Double) {
-            return (T) Long.valueOf(num1.longValue() - num2.longValue());
-        } else {
-            throw new IllegalArgumentException("Неверный тип данных");
-        }
+    @Override
+    public Integer sub(Integer a, Integer b) {
+        return a - b;
     }
 
-    public T multiply(T num1, T num2) {
-        if (num1 instanceof Integer) {
-            return (T) Integer.valueOf(num1.intValue() * num2.intValue());
-        } else if (num1 instanceof Double) {
-            return (T) Double.valueOf(num1.doubleValue() * num2.doubleValue());
-        } else {
-            throw new IllegalArgumentException("Неверный тип данных");
-        }
+    @Override
+    public Integer div(Integer a, Integer b) throws Exception {
+        if (b == 0)
+            throw new Exception("b == 0");
+
+        return a / b;
     }
 
-    public T divide(T num1, T num2) {
-        if (num1 instanceof Integer) {
-            return (T) Integer.valueOf(num1.intValue() / num2.intValue());
-        } else if (num1 instanceof Double) {
-            return (T) Double.valueOf(num1.doubleValue() / num2.doubleValue());
-        } else {
-            throw new IllegalArgumentException("Неверный тип данных");
-        }
+    @Override
+    public Integer mul(Integer a, Integer b) {
+        return a * b;
+    }
+}
+
+class DoubleOperations implements Operationable<Double> {
+
+    @Override
+    public Double add(Double a, Double b) {
+        return a + b;
+    }
+
+    @Override
+    public Double sub(Double a, Double b) {
+        return a - b;
+    }
+
+    @Override
+    public Double div(Double a, Double b) throws Exception {
+        if (b == 0)
+            throw new Exception("b == 0");
+
+        return a / b;
+    }
+
+    @Override
+    public Double mul(Double a, Double b) {
+        return a * b;
     }
 }
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Введите выражение: ");
+        System.out.println("Выберите тип данных (1 - Integer, 2 - Double): ");
+        int dataTypeChoice = sc.nextInt();
 
-        String input = sc.nextLine();
-
-        String[] parts = input.split("\\s+");
-        if (parts.length != 3) {
-            System.out.println("Неверный формат ввода. Используйте пример: число оператор число ( 2 + 2 )");
+        Operationable<?> calculator;
+        if (dataTypeChoice == 1) {
+            calculator = new IntegerOperations();
+        } else if (dataTypeChoice == 2) {
+            calculator = new DoubleOperations();
+        } else {
+            System.out.println("Неподдерживаемый тип данных.");
             return;
         }
 
-        try {
-            String operator = parts[1];
+        System.out.println("Введите первое число:");
+        Double operand1 = sc.nextDouble();
 
-            double num1 = Double.parseDouble(parts[0]);
-            double num2 = Double.parseDouble(parts[2]);
+        System.out.println("Введите второе число:");
+        Double operand2 = sc.nextDouble();
 
-            Calculator calc = new Calculator<Double>();
-            if (num1 != (int)num1 && num2 != (int)num2)
-                calc = new Calculator<Integer>();
+        System.out.println("Выберите операцию (1 - сложение, 2 - вычитание, 3 - умножение, 4 - деление):");
+        int operationChoice = sc.nextInt();
 
-            Number result = 0;
-            switch (operator) {
-                case "+":
-                    result = calc.add(num1, num2);
-                    break;
-                case "-":
-                    result = calc.subtract(num1, num2);
-                    break;
-                case "*":
-                    result = calc.multiply(num1, num2);
-                    break;
-                case "/":
-                    if (num2 == 0) {
-                        System.out.println("Деление на 0");
-                        return;
-                    }
-
-                    result = calc.divide(num1, num2);
-                    break;
-                default:
-                    System.out.println("Неподдерживаемый оператор: " + operator);
-                    return;
-            }
-
-            System.out.println("Результат: " + result);
-        } catch (Exception e) {
-           
+        switch (operationChoice) {
+            case 1:
+                System.out.println("Результат: " + calculator.add(operand1, operand2));
+                break;
+            case 2:
+                System.out.println("Результат: " + calculator.sub(operand1, operand2));
+                break;
+            case 3:
+                System.out.println("Результат: " + calculator.mul(operand1, operand2));
+                break;
+            case 4:
+                System.out.println("Результат: " + calculator.div(operand1, operand2));
+                break;
+            default:
+                System.out.println("Неподдерживаемая операция.");
         }
 
         sc.close();
     }
 }
-
-
-
-
-
-
-
